@@ -1,0 +1,65 @@
+[versions]
+# Android Gradle Plugin
+agp = "8.11.1"  # Or your current Android Studio compatible version (e.g., 8.3.x, 8.4.x) - Check this! 8.11.1 is very new, might be alpha/beta.
+# Kotlin
+kotlin = "2.0.21" # For Compose Compiler 1.5.10. If you MUST use Kotlin 2.0.21, see compose compiler notes.
+composeCompilerPlugin = "2.0.21"
+
+# Core AndroidX
+coreKtx = "1.16.0" # Check for latest stable
+lifecycleRuntimeKtx = "2.9.2" # Check for latest stable
+activityCompose = "1.10.1" # Check for latest stable
+
+# Compose Bill of Materials (BOM) - THIS IS THE MOST IMPORTANT ONE
+# Use the latest STABLE version from: https://developer.android.com/jetpack/compose/bom/versioning
+# Example: "2024.02.01" was stable. "2024.09.00" might be too new or unstable if not released widely.
+# Let's try a known stable one first, then you can update.
+# composeBom = "2024.02.01" # Let's use this as an example of a known stable.
+# For Kotlin 1.9.22, Compose Compiler 1.5.10 -> a BOM around March/April 2024 is good.
+# e.g., composeBom = "2024.04.00"
+# For Kotlin 2.0.0, Compose Compiler is integrated. BOM "2024.05.00" or newer.
+# Since your AGP is very new (8.11.1 implies you are on a canary/beta Studio),
+# and Kotlin is 2.0.21, let's aim for a very recent BOM.
+# The "2024.09.00" you had might be okay if it's officially released.
+# Let's assume for a moment "2024.05.00" is a safe recent choice.
+composeBom = "2025.07.00" # Update this to the latest STABLE BOM compatible with your Kotlin/AGP.
+
+# If you are using Kotlin 1.9.x, you need this for the Compose Compiler Plugin.
+# If using Kotlin 2.0.x, the Compose Compiler is integrated, and you don't declare this plugin separately.
+# composeCompilerExtension = "1.5.10" # For Kotlin 1.9.22
+
+# Testing
+junit = "4.13.2"
+androidxJunit = "1.2.1"
+espressoCore = "3.6.1"
+navigationRuntimeAndroid = "2.9.2"
+
+[libraries]
+# Core AndroidX
+androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
+androidx-lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycleRuntimeKtx" }
+androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activityCompose" }
+
+# Compose - BOM and Libraries (versions managed by BOM)
+androidx-compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "composeBom" }
+androidx-ui = { group = "androidx.compose.ui", name = "ui" }
+androidx-ui-graphics = { group = "androidx.compose.ui", name = "ui-graphics" }
+androidx-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" } # For debugImplementation
+androidx-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
+androidx-material3 = { group = "androidx.compose.material3", name = "material3" } # CORRECT Material 3 for Compose
+
+# Testing
+junit = { group = "junit", name = "junit", version.ref = "junit" }
+androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "androidxJunit" }
+androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
+androidx-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" } # For debugImplementation
+androidx-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
+androidx-navigation-runtime-android = { group = "androidx.navigation", name = "navigation-runtime-android", version.ref = "navigationRuntimeAndroid" }
+
+
+[plugins]
+androidApplication = { id = "com.android.application", version.ref = "agp" }
+kotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+# THIS IS THE PLUGIN YOU NEED TO ADD/CORRECT:
+kotlinCompose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "composeCompilerPlugin" } # Or version.ref = "kotlin" if they always match
+
